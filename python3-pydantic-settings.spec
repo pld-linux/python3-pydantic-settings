@@ -7,7 +7,7 @@ Summary:	Settings management using Pydantic
 Summary(pl.UTF-8):	Zarządzanie ustawieniami z użyciem Pydantic
 Name:		python3-pydantic-settings
 Version:	2.16.2
-Release:	1
+Release:	2
 License:	MIT
 Group:		Libraries/Python
 #Source0Download: https://pypi.org/simple/pydantic-settings/
