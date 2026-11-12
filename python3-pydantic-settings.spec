@@ -7,7 +7,7 @@ Summary:	Settings management using Pydantic
 Summary(pl.UTF-8):	Zarządzanie ustawieniami z użyciem Pydantic
 Name:		python3-pydantic-settings
 Version:	2.16.2
-Release:	3
+Release:	4
 License:	MIT
 Group:		Libraries/Python
 #Source0Download: https://pypi.org/simple/pydantic-settings/
@@ -48,6 +48,9 @@ danych Pydantic.
 %py3_build_pyproject
 
 %if %{with tests}
+# pytest-examples lints the doc examples with ruff; ruff crashes at startup
+# on x32, skip them where it cannot run
+ruff --version >/dev/null 2>&1 || skip_docs="--ignore tests/test_docs.py"
 # Azure Key Vault doc examples need azure-identity (not in PLD); the ids
 # carry docs/index.md line ranges, refresh them on update
 PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 \
@@ -55,7 +58,8 @@ PYTEST_PLUGINS=pytest_examples,pytest_mock.plugin \
 %{__python3} -m pytest tests \
 	--deselect 'tests/test_docs.py::test_docs_examples[docs/index.md:2827-2870]' \
 	--deselect 'tests/test_docs.py::test_docs_examples[docs/index.md:2876-2907]' \
-	--deselect 'tests/test_docs.py::test_docs_examples[docs/index.md:2917-2955]'
+	--deselect 'tests/test_docs.py::test_docs_examples[docs/index.md:2917-2955]' \
+	$skip_docs
 %endif
 
 %install
